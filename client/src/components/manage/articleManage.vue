@@ -24,7 +24,10 @@
 
                     <!-- 这里的info居然索到了style文件下对info的样式 -->
                     <div class="handle">
-                        <button class="article_modify">修改</button>
+                        <button class="article_modify"
+                        @click="modify(item._id)">
+                        
+                        修改</button>
                         <button class="article_delete">删除</button>
                     </div>
                 </li>
@@ -56,6 +59,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { ref, onMounted } from "vue";
+import { useRouter }  from "vue-router";
 import useStore from "../../store";
 const store = useStore();
 const { article } = store;
@@ -165,6 +169,12 @@ const choose_page = () => {
      isChoosePage.value = false
 
 }
+const router = useRouter() 
+function modify(id: string){
+    router.push({name:'article_write',params:{id:id}})
+
+
+}
 </script>
 
 <style scoped>
@@ -175,6 +185,7 @@ const choose_page = () => {
     border-radius: 10px;
     height: 90vh;
     position: relative;
+    margin-top: 30px;
 }
 
 .manage_head {

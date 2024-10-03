@@ -46,6 +46,38 @@ let inputVisible = ref(false)
 let inputValue = ref('')
 let compiledMarkdown = shallowRef('')
 
+
+import { useRoute } from 'vue-router';
+// 接收路由参数
+const route = useRoute()
+const articleId = ref()
+
+import { reqArticle } from '../../api/reqArticle';
+// 获取文章详情，方便在上面修改
+const getArticleDetail = async () => {
+  const result = await reqArticle(articleId.value)
+  const res = result.data[0]
+  title.value = res.title
+  gist.value = res.gist
+  content.value = res.content
+  labels.value = res.labels
+  compiledMarkdown.value = marked(res.content)
+  // console.log(res.title);
+}
+// 这里路由传递参数的时机不是太清楚
+onMounted(() => {
+  articleId.value = route.params.id as string||null
+  console.log(articleId.value);
+  
+  if (articleId.value) {
+    getArticleDetail()
+    
+  }
+})
+
+
+
+
 const showInput = () => {
   inputVisible.value = true
 }
@@ -85,9 +117,17 @@ const update = () => {
   
 }
 import { postArticle } from '../../api/postArticle/index'
-let articleData=reactive({})
+
+let articleData = reactive({})
+import { useRouter } from 'vue-router';
+
+// 保存修改和增添文章后，调用hook函数，请求后端更新文章列表，并跳转到管理主页
+import useReqArticle from '../../hook/useReqArticle/index.ts'
+const { reqA } = useReqArticle()
+const router = useRouter()
 const saveArticle = () => {
-   articleData = {
+  articleData = {
+    _id: articleId.value,
     title: title.value,
     gist: gist.value,
     content: content.value,
@@ -101,6 +141,8 @@ const saveArticle = () => {
   postArticle(articleData).then((res) => {
     if (res.data.status === 200) {
       alert(res.data.message)
+      reqA().then(()=>{ router.push({ name: 'admin_home' }) })
+      
     }
     else if (res.data.status === 500){
       alert(res.data.message)

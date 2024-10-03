@@ -68,8 +68,16 @@ export const router = createRouter({
       },
     },
     {
-      path: "/article_write",
+      path: "/article_write:id",
       name: "article_write",
+      components: {
+        content: () => import("../components/manage/articleEdit.vue"),
+        sidebar: () => import("../components/sidebar/admin_sidebar.vue"),
+      },
+    },
+    {
+      path: "/article_post",
+      name: "article_post",
       components: {
         content: () => import("../components/manage/articleEdit.vue"),
         sidebar: () => import("../components/sidebar/admin_sidebar.vue"),

@@ -22,12 +22,14 @@ declare module 'vue' {
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElNav: typeof import('element-plus/es')['ElNav']
+    ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTag: typeof import('element-plus/es')['ElTag']
     HelloWorld: typeof import('./src/components/helloWorld.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Sidebar: typeof import('./src/components/sidebar/sidebar.vue')['default']
     Signin: typeof import('./src/components/signin/index.vue')['default']
+    Style_change: typeof import('./src/components/sidebar/sidebar_components/style_change/index.vue')['default']
     Visitor_sidebar: typeof import('./src/components/sidebar/visitor_sidebar.vue')['default']
   }
 }

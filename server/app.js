@@ -10,9 +10,11 @@ app.use(cors()); //使用cors中间件,解决跨域问题
 
 // 连接数据库
 try {
-  mongoose.connect("mongodb://localhost:27017/vue_press_blog", {}).then(() => {
-    console.log("数据库连接成功");
-  });
+  mongoose
+    .connect("mongodb://localhost:27017/vue_press_blog", {})
+    .then(() => {
+      console.log("数据库连接成功");
+    });
 } catch (e) {
   console.log(e);
 }

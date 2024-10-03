@@ -1,5 +1,5 @@
 
-html{color:#000;background:#FFF;}   
+  
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,   
 fieldset,input,textarea,p,blockquote,th,td {   
 margin:0;   
@@ -66,4 +66,21 @@ body{
   pre code{
     display: block;
     overflow-x: auto;
+}
+
+
+ html.dark{
+  --bg-color: #491717ca;
+  --text-color: #FFF;
+  --border-color: #FFF;
+  --link-color: #FFF;
+  --link-hover-color: #FFF;
+}
+
+html.light{
+  --bg-color: #f6dfdf;
+  --text-color: #222;
+  --border-color: #222;
+  --link-color: #222;
+  --link-hover-color: #222;
 }

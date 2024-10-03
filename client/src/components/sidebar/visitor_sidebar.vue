@@ -28,7 +28,7 @@
                     <router-link to="/article">
                         <li>
                             <span class="archive_count">{{ articleNumber }}</span>
-                            <span class="archive_name">日志</span>
+                            <style_change/>
                         </li>
                     </router-link>
                 </ul>
@@ -63,7 +63,7 @@
     </div>
 </template>
 <script setup lang="ts">
-
+import style_change from './sidebar_components/style_change/index.vue'
 import "./style/index.css"
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";

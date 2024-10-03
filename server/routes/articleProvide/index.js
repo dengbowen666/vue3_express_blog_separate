@@ -6,8 +6,17 @@ const articleProvide = (app) => {
   let articleRes;
   //获取文章
   app.get("/api/article", async (req, res) => {
+const {id}=req.query;
+
+
     try {
-      articleRes = await Article.find({});
+      // console.log(id);
+if (id != "") {
+  articleRes = await Article.find({ _id: id });
+}
+else{
+  articleRes = await Article.find({});
+}
       res.json(articleRes);
       //  console.log(articleRes);
     } catch (err) {

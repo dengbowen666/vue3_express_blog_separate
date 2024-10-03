@@ -31,7 +31,7 @@
           <router-link to="/article">
             <li>
               <span class="archive_count">{{ articleNumber }}</span>
-              <span class="archive_name">日志</span>
+             <style_change/>
             </li>
           </router-link>
         </ul>
@@ -69,7 +69,9 @@
 import useStore from "../../store/index";
 import { onMounted, ref } from "vue";
 let username = ref("");
+import style_change from './sidebar_components/style_change/index.vue'
 import { useRouter } from "vue-router";
+
 const router = useRouter();
 onMounted(() => {
   const store = useStore();
@@ -89,7 +91,7 @@ const logout = () => {
   } else return;
 };
 const write = () => {
-  router.push("/article_write");
+  router.push({ name: "article_post" });
 };
 const sidebarOptions = [
   {
