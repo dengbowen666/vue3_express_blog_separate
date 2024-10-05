@@ -94,7 +94,7 @@ router.beforeEach((to, from, next) => {
     if (to.path === "/signin" || to.path === "/visitor_home/visitor_article_pre") {
       next();
     } else {
-      const isLogin = localStorage.getItem("isLogin_token");
+      const isLogin = localStorage.getItem("isLogin");
       if (isLogin) {
         next();
       } else

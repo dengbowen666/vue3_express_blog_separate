@@ -87,7 +87,11 @@ import "./style/index.css";
 
 const logout = () => {
   if (confirm("确定要登出吗？")) {
-    router.push({name: 'visitor_article_pre' });
+    
+    router.push({ name: 'visitor_article_pre' });
+    localStorage.removeItem('isLogin');
+// 登出时把loign的标志清除
+    
   } else return;
 };
 const write = () => {

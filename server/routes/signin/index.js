@@ -28,13 +28,12 @@ const signin = (app) => {
             });
           }
           //  弄了一个晚上，前端那边axios请求直接等不到结果然后返回Promise被拒绝，结果是这里if中的res.json没有执行，compare异步函数写成了comparesyn同步函数，所以前端那边一直等不到结果
-          else {
-            res.json({
-              status: 401,
-              success: false,
-              message: "用户名或密码错误",
-            });
-          }
+        });
+      } else {
+        res.json({
+          status: 401,
+          success: false,
+          message: "用户名或密码错误",
         });
       }
     } catch (err) {
