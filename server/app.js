@@ -18,6 +18,16 @@ try {
 } catch (e) {
   console.log(e);
 }
+
+// // 连接数据库，带上用户名密码
+// try {
+//   mongoose.connect('mongodb://vue_express_blog:dbw2004627@localhost:27017/vue_express_blog', {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+// }).then(console.log("连接数据库成功"));
+// } catch (e) {
+//   console.log(e);
+// }
 // 登录模块
 app.use(express.json());
 var signin = require("./routes/signin/index");
@@ -31,6 +41,13 @@ articleProvide(app);
 
 var postArticle = require("./routes/postArticle/index");
 postArticle(app);
+var deleteArticle = require("./routes/deleteArticle/index");
+deleteArticle(app);
+
 app.listen(port, () => {
   console.log(`app listening at http://localhost:${port}`);
 });
+
+
+
+

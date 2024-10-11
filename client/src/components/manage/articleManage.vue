@@ -2,8 +2,10 @@
     <div class="manage-content">
         <div class="manage_head">
             <div class="sort">
-                <button @click="sort('date')">按时间排序</button>
-                <button @click="sort('title')">按首字母排序</button>
+                <button @click="sort('date')" class="sort_button time">by时间</button>
+                <button @click="sort('title') "
+                class="sort_button
+                letter">by字母</button>
             </div>
 
             <div class="search">
@@ -24,11 +26,13 @@
 
                     <!-- 这里的info居然索到了style文件下对info的样式 -->
                     <div class="handle">
-                        <button class="article_modify"
-                        @click="modify(item._id)">
-                        
-                        修改</button>
-                        <button class="article_delete">删除</button>
+                        <button
+                       class="article_modify" @click="modify(item._id)">
+
+                            修改</button>
+                        <button 
+                    
+                        class="article_delete" @click="article_delete(item._id)">删除</button>
                     </div>
                 </li>
             </ul>
@@ -41,9 +45,10 @@
                     <CaretLeft />
                 </el-icon>
             </div>
-            <div class="current_page" v-if="!isChoosePage" @dblclick="isChoosePage=true;">{{ current_page + 1 }}</div>
-            <div v-if="isChoosePage" class="choose_page" >
-            <el-input v-model="choose_page_number" @blur="choose_page" @keyup.enter="choose_page" placeholder="页数"  > </el-input>
+            <div class="current_page" v-if="!isChoosePage" @dblclick="isChoosePage = true;">{{ current_page + 1 }}</div>
+            <div v-if="isChoosePage" class="choose_page">
+                <el-input v-model="choose_page_number" @blur="choose_page" @keyup.enter="choose_page" placeholder="页数">
+                </el-input>
             </div>
             <div class="next_page">
                 <el-icon @click="next_page" :class="{ noclick: current_page == total_pages - 1 }">
@@ -59,7 +64,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { ref, onMounted } from "vue";
-import { useRouter }  from "vue-router";
+import { useRouter } from "vue-router";
 import useStore from "../../store";
 const store = useStore();
 const { article } = store;
@@ -98,13 +103,23 @@ function searchArticls() {
     );
     // console.log(resList.value.length);
 
-    divide_page()
+
 }
 onMounted(() => {
     // 挂载的时候就找一次然后渲染出来
     searchArticls();
 
 });
+import { watch } from "vue";
+watch(
+    () => resList.value,
+    async (newValue) => {
+        divide_page()
+    },
+    { deep: true }
+    // 这里需要深度监听，因为resList.value是引用类型，直接监听的话，值变了但是地址没变，监听不到
+);
+
 // 排序模块
 function sort(choice: string) {
     if (choice == "date") {
@@ -116,7 +131,7 @@ function sort(choice: string) {
 
         // 这里运用sort函数，自定义规则对页面上呈现的resList进行排序
         // 把之前按当地时间转换的date字符串转换成date对象，然后比较时间，按降序排列
-        divide_page()
+
     } else if (choice == "title") {
         resList.value = resList.value.sort((a, b) => {
             const titlea = a.title.split("")[0].toLowerCase();
@@ -125,7 +140,7 @@ function sort(choice: string) {
             return titlea.charCodeAt() - titleb.charCodeAt();
             // 如果a<b则返回负数，a排在前面
         });
-        divide_page()
+
     }
 }
 const article_page = ref(10);
@@ -165,33 +180,63 @@ function divide_page() {
 const isChoosePage = ref(false)
 const choose_page_number = ref()
 const choose_page = () => {
-    current_page.value = choose_page_number.value - 1 
-     isChoosePage.value = false
+    current_page.value = choose_page_number.value - 1
+    isChoosePage.value = false
 
 }
-const router = useRouter() 
-function modify(id: string){
-    router.push({name:'article_write',params:{id:id}})
+const router = useRouter()
+function modify(id: string) {
+    router.push({ name: 'article_write', params: { id: id } })
 
 
 }
+
+import { deleteArticle } from "../../api/deleteArticle";
+import useReqArtivcle from "../../hook/useReqArticle/index"
+const { reqA } = useReqArtivcle()
+function article_delete(id: string) {
+    if (confirm("确定删除吗？")) {
+        deleteArticle(id).then(async (res) => {
+            if (res.data.status == 200) {
+
+
+                reqA().then(() => {
+                    alert(res.data.message)
+                })
+                resList.value = articleList.value
+
+
+            }
+            else {
+                alert(res.data.message)
+            }
+        }).catch((err) => {
+
+        })
+    }
+
+}
+
 </script>
 
 <style scoped>
 .manage-content {
-    flex: 1;
-    padding: 20px;
-    background-color: #ffffff00;
+    margin: 0 0 10px 20px;
+    flex:1;
+    padding: 40px;
+    background-color: #ffffff44;
     border-radius: 10px;
     height: 90vh;
     position: relative;
-    margin-top: 30px;
+    box-shadow: #222 0 0 10px;
+   
 }
 
 .manage_head {
-    position: fixed;
-    width: 720px;
+    position: absolute;
+    width: 680px;
     display: flex;
+    margin-top: -20px;
     justify-content: space-between;
     align-items: center;
 
@@ -238,6 +283,50 @@ function modify(id: string){
             border-radius: 0px 5px 5px 0px;
             cursor: pointer;
         }
+    }
+
+    .sort{
+        display: flex;
+        width: 130px;
+        justify-content: space-between;
+       
+        .sort_button{
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+            /* 美观的球形 */
+            background-color: var(--bgcolor);
+            color: var(--color);
+            cursor: pointer;
+            transition: all 0.5s ease-in-out;
+            /* 阴影 */
+            box-shadow: #222 0 0 10px;
+            border-color: transparent;
+            
+        }
+        .time{
+            --bgcolor:#222
+            ;
+            --color:#fff;
+        }
+        .time:hover{
+            --bgcolor:#fff;
+            --color:#222;
+        }
+        .letter{
+            --bgcolor:#fff;
+            --color:#222;
+        }
+        .letter:hover{
+            --bgcolor:#222;
+            --color:#fff;
+        }
+        .sort_button:hover{
+            background-color: var(--bgcolor);
+            color: var(--color);
+        }
+
+        
     }
 }
 
@@ -294,7 +383,27 @@ function modify(id: string){
         margin: 10px 0;
     }
 }
+.handle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90px;
+    button{
+        
+      
+      
+        background-color: var(--bgcolor);
+        color: var(--color);
+        cursor: pointer;
+        transition: all 0.5s ease-in-out;
+        /* 阴影 */
+        box-shadow: #7b525286 5px 5px 10px;
+        border-color: transparent;
+    
 
+    }
+    
+}
 .no_content {
     margin-top: 100px;
     text-align: center;
@@ -316,25 +425,27 @@ function modify(id: string){
     margin-right: 10px;
 
 }
+
 .current_page {
     color: #222;
     height: 30px;
     font-size: 15px;
-width: 28px;
-border: 1px solid transparent;
-text-align: center;
-line-height: 30px;
-background: #fff;
-border-radius: 5px
-;
+    width: 28px;
+    border: 1px solid transparent;
+    text-align: center;
+    line-height: 30px;
+    background: #fff;
+    border-radius: 5px;
 }
-.choose_page{
+
+.choose_page {
     color: #222;
-    
+
     font-size: 12px;
-width: 30px;
-border: 1px solid transparent;
+    width: 30px;
+    border: 1px solid transparent;
 }
+
 .noclick {
     color: #999;
     cursor: not-allowed;
@@ -343,4 +454,5 @@ border: 1px solid transparent;
 .next_page {
     margin-left: 10px;
 }
+
 </style>

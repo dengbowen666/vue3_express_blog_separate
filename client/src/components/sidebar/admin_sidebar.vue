@@ -28,17 +28,17 @@
       </div>
       <div class="archive">
         <ul>
-          <router-link to="/article">
+         
             <li>
-              <span class="archive_count">{{ articleNumber }}</span>
+              
              <style_change/>
             </li>
-          </router-link>
+         
         </ul>
       </div>
       <ul class="communication">
         <li class="communication_item">
-          <a href="#">
+          <a href="https://github.com/dengbowen666/vue3_express_blog_separate">
             <img src=" ../../assets/图标/github.svg" alt="" />
             <span>GitHub</span>
           </a>
@@ -50,7 +50,7 @@
           </a>
         </li>
         <li class="communication_item">
-          <a href="#">
+          <a href="https://space.bilibili.com/446703056?spm_id_from=333.1007.0.0">
             <img src="../../assets/图标/bilibili.svg" alt="" />
             <span>BiliBili</span>
           </a>
@@ -112,7 +112,7 @@ const sidebarOptions = [
   {
     id: 3,
     name: "写作",
-    path: "/article_write",
+    path: "/article_post",
     click: write,
     icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" ><path fill="currentColor" d="m199.04 672.64 193.984 112 224-387.968-193.92-112-224 388.032zm-23.872 60.16 32.896 148.288 144.896-45.696zM455.04 229.248l193.92 112 56.704-98.112-193.984-112-56.64 98.112zM104.32 708.8l384-665.024 304.768 175.936L409.152 884.8h.064l-248.448 78.336zm384 254.272v-64h448v64h-448z"></path></svg>`,
   },
@@ -124,6 +124,7 @@ const sidebarOptions = [
 ];
 </script>
 <style scoped>
+
 .tip {
   span {
     padding: 2px 10px;

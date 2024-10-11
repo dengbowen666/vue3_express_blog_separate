@@ -33,9 +33,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted,shallowRef } from 'vue'
+import { ref, reactive, onMounted,shallowRef ,watch} from 'vue'
 import { marked } from 'marked'
-import hljs from 'highlight.js'
+
 import "highlight.js/styles/monokai-sublime.css";
 
 let title = ref('')
@@ -57,22 +57,38 @@ import { reqArticle } from '../../api/reqArticle';
 const getArticleDetail = async () => {
   const result = await reqArticle(articleId.value)
   const res = result.data[0]
-  title.value = res.title
-  gist.value = res.gist
-  content.value = res.content
-  labels.value = res.labels
-  compiledMarkdown.value = marked(res.content)
+  console.log(res);
+  
+  if(res){
+    title.value = res.title
+    gist.value = res.gist
+    content.value = res.content
+    labels.value = res.labels
+    compiledMarkdown.value = marked(res.content)
+  }
+  else {
+    console.log('没有获取到文章详情'); 
+    // 说明这里传过去请求文章的id有问题，是新写作界面
+  }
+
   // console.log(res.title);
 }
 // 这里路由传递参数的时机不是太清楚
+articleId.value = route.params.id as string
+watch(() => route.params.id, (newId) => {
+  articleId.value = newId; // 更新 articleId
+  console.log('Updated Article ID:', articleId.value); // 这里应该有值
+});
 onMounted(() => {
-  articleId.value = route.params.id as string||null
-  console.log(articleId.value);
   
-  if (articleId.value) {
+ 
+  
+  
+    
     getArticleDetail()
     
-  }
+  
+
 })
 
 

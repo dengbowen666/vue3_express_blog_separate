@@ -61,7 +61,7 @@ onMounted(() => {
   const token = localStorage.getItem('remember')
   if (token) {
     // (废)如果浏览器存储中有token，那么说明用户已经登录过，直接从用token向后端获取账号密码，填充到input框，跳转到admin_home
-    name.value = "******"
+    name.value = JSON.parse( localStorage.getItem('userinfo')||"").name
     password.value = "******"
     // 获取input元素
     var inputElements = document.querySelectorAll('.input');
@@ -85,8 +85,6 @@ const checked = ref(false || localStorage.getItem('remember') ? true : false)
 //如果没有token，则清空name和password需要手动输入在登陆 
 async function signin() {
 
-
-
   try {
     if (name.value.length < 6 || password.value.length < 6) {
       alert('用户名和密码必须大于6位')
@@ -104,8 +102,9 @@ async function signin() {
         localStorage.removeItem('remember')
 
       }
-      localStorage.setItem('isLogin', res.data.token)
-      setTimeout(() => router.push({ name: 'admin_home' }), 200)
+      localStorage.setItem('isLogin', "true")
+    //router.push({ name: 'visitor_article_pre' })
+      router.push({ name: 'admin_home' })
       // 延迟200毫秒后跳转到admin_home，直接跳转，那么content处的组件article_pre不会正常展示，需要手动刷新
 
       // 将服务器返回的token存储到浏览器存储中
@@ -116,17 +115,9 @@ async function signin() {
 
     }
     else if (res.data.status === 401) {
-      if (localStorage.getItem('remember')) {
-        if (!checked.value) {
-          localStorage.removeItem('remember')
-        }
-        // console.log(1111);
-        localStorage.setItem('isLogin', 'true')
-        router.push({ name: 'admin_home' })
-      }
-      else {
+     
         alert(res.data.message)
-      }
+      
     }
 
   }

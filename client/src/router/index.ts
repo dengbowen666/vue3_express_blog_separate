@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHashHistory, createWebHistory} from "vue-router";
 
 // 由于懒加载经常无法正常跳转，所以先引入
 export const router = createRouter({
@@ -68,7 +68,7 @@ export const router = createRouter({
       },
     },
     {
-      path: "/article_write:id",
+      path: "/article_write/:id",
       name: "article_write",
       components: {
         content: () => import("../components/manage/articleEdit.vue"),
@@ -91,9 +91,10 @@ router.beforeEach((to, from, next) => {
   next();
 })
   router.beforeEach((to, from, next) => {
-    if (to.path === "/signin" || to.path === "/visitor_home/visitor_article_pre") {
-      next();
-    } else {
+    if (to.path != "/admin_home"&& to.path != "/admin_about") {
+      next()
+   }
+    else {
       const isLogin = localStorage.getItem("isLogin");
       if (isLogin) {
         next();
@@ -101,8 +102,10 @@ router.beforeEach((to, from, next) => {
         next({
           path: "/signin",
         });
-    }
-  }
+   }
+   
+  
+  })
   
   // 想直接访问admin_home，需要如果没带着登陆过后返回的token，则跳转到登陆页面，如果带着token，则允许直接跳转到admin_home页面
-  )
+  

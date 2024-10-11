@@ -28,4 +28,7 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
   ],
+  esbuild: {
+    drop: ["console", "debugger"],
+  },
 });

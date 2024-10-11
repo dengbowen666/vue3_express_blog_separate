@@ -12,6 +12,12 @@
 
   --words-color: #222;
   --sidebar-color: #eeeeee00;
+
+  background: #ffffff40;
+box-shadow: #222 -1px 0px 10px;
+
+
+
 }
 
 @media (max-width: 767px) {
